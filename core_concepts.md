@@ -28,14 +28,18 @@ see this, we pass the age 35, use the linear function then pass the output of th
 
 Now if we have some more inputs like income and education. we have this below.
 
-![alt text](images\neuron.png)
+![simple visualization of a neuron](images\neuron.png)
 
 now the values in there maybe random but the weights from the input and bias get updated during the __backpropogation__.
 
 ---
 
 # Neural network
-Now that we got to know about what is neuron right, now lets see 
+Now that we got to know about what is neuron right, now lets see how a actual neural network looks like in words and there is also a image to see that. **a simple network contains bunch of neurons stacked on top of each other, then we have something named as hidden layer which has a crucial role and then a an output layer, this is a simple network with one hidden layer.** Things which can vary based one situation is number or neurons per layer and number of hidden layers in the network. There is also some variation related to the connections between the neurons which is another concept under types or networks.
+
+![simple visualization of a network](images\network.png)
 
 
 There is some lot of math behind a neural network which needs to be understood first side by side while learning. 
+
+---
