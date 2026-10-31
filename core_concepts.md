@@ -34,3 +34,8 @@ now the values in there maybe random but the weights from the input and bias get
 
 ---
 
+# Neural network
+Now that we got to know about what is neuron right, now lets see 
+
+
+There is some lot of math behind a neural network which needs to be understood first side by side while learning. 
