@@ -43,3 +43,26 @@ Now that we got to know about what is neuron right, now lets see how a actual ne
 There is some lot of math behind a neural network which needs to be understood first side by side while learning. 
 
 ---
+
+# The Reality of Data in ML vs. Deep Learning
+
+**1. Deep Learning CAN process Tabular Data**
+You can absolutely use Deep Learning (specifically a Multi-Layer Perceptron) to predict house prices or customer churn from an Excel sheet.
+
+* **The Catch (The Conversion Step):** PyTorch and TensorFlow cannot natively read a Pandas DataFrame. To feed an Excel sheet into a neural network, you simply run a single line of code to convert that 2D tabular grid into a 2D PyTorch Tensor (e.g., `torch.tensor(dataframe.values)`).
+
+**2. The Industry Standard: Which one wins?**
+Just because Deep Learning *can* process tabular data doesn't mean it is the best tool for the job.
+
+* **Traditional ML (XGBoost, Random Forests) = The King of Tabular Data.** If you have standard Excel data (rows and columns), traditional ML will almost always beat Deep Learning. It trains in seconds, requires much less computational power, and usually achieves higher accuracy on structured numbers.
+* **Deep Learning (CNNs, Transformers) = The King of Unstructured Data.** DL was invented because traditional ML fails completely on images, audio, and text.
+
+**3. When do we actually use DL for Tabular Data?**
+In production, engineers only use Deep Learning for Excel-style data in two scenarios:
+
+1. **Astronomical Scale:** The dataset has hundreds of millions of rows (like global ad-click predictions), which overwhelms traditional ML trees.
+2. **Hybrid Models:** You want to combine tabular data with unstructured data. For example, predicting a house's price by feeding an MLP the tabular data (square footage, zip code) *while simultaneously* feeding a CNN the image data (photos of the living room).
+
+---
+---
+
