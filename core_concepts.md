@@ -64,5 +64,3 @@ In production, engineers only use Deep Learning for Excel-style data in two scen
 2. **Hybrid Models:** You want to combine tabular data with unstructured data. For example, predicting a house's price by feeding an MLP the tabular data (square footage, zip code) *while simultaneously* feeding a CNN the image data (photos of the living room).
 
 ---
----
-
