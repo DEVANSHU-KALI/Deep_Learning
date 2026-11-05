@@ -38,7 +38,32 @@ this is basic MLP with 1 input and 1 output layer. we use keras to initialize th
 
 This is a simple way of initializing the model.
 
-need to talk about 
-2. info related to flattening the train set. including why 
-3. loss function we used
-4. explaining the confusion matrix
+## after initialization.
+- the very next step is to compile the model, i.e, initialize the hyperparameters. you can see the code. if you want to know more about .compile(), visit ["Keras"](https://keras.io/api/models/model_training_apis/).
+- next we have fit method, where you actually pass the data to the network, similarly done in ml. to know more visit Visit ["Keras"](https://keras.io/api/models/model_training_apis/), scroll the page down to see info related to this fit method.
+
+# evaluation 
+- even without evaluate method, you can see the accuracy and loss directly when you run that training cell, but we do have some other things which we can pass as parameters. you can visit ["Keras"](https://keras.io/api/models/model_training_apis/) and scroll down to ses info about this method. 
+
+---
+# info related to flattening the data.
+You only flatten images at the very beginning when feeding them into __Dense (Fully Connected / MLP)__ layers.
+
+Modern computer vision architectures, like __CNNs (Convolutional Neural Networks)__ and __Vision Transformers__, do not flatten the 2D image at the start—doing so would actually destroy the image's structure.
+
+## 1. Why MLPs Require Flattening
+Dense layers (keras.layers.Dense) only understand 1D vectors:
+$$\text{Output} = W \cdot x + b$$
+
+A matrix multiplication expects $x$ to be a single column of numbers. It has no concept of rows, columns, height, or width. Because a Dense layer physically cannot accept a 2D matrix like (28, 28), you are forced to squash it into a 1D vector of 784 values.
+## 2. The Big Problem with Flattening Images
+When you flatten an image:
+- Pixels that are vertically next to each other (e.g., Row 1 Col 5 and Row 2 Col 5) get separated by hundreds of indices in the 1D array.
+- The model loses spatial locality—it forgets that pixel $(x, y)$ is directly above pixel $(x, y+1)$.
+- The model must re-learn spatial geometry from scratch using brute-force weights.
+
+# Loss function and optimizer
+- You need to first know what is loss and optimizer.   what are the different loss functions used, if you came through ML, you would've known this but in DL there are some more new type of loss functions which are not seen in ML.
+- the one which we used is `sparse_categorical_crossentropy`. used when there are two or more label classes. We expect labels to be provided as integers. There are lot of other loss functions which can be used based on the different conditions, to know more about different loss functions visit ["Keras"](https://keras.io/api/losses/) 
+- same goes for optimizers, visit ["Keras"](https://keras.io/api/optimizers/) to know about different optimizers and also about the one which we used in the code.
+
