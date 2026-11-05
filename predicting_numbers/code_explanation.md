@@ -40,7 +40,7 @@ This is a simple way of initializing the model.
 
 ## after initialization.
 - the very next step is to compile the model, i.e, initialize the hyperparameters. you can see the code. if you want to know more about .compile(), visit ["Keras"](https://keras.io/api/models/model_training_apis/).
-- next we have fit method, where you actually pass the data to the network, similarly done in ml. to know more visit Visit ["Keras"](https://keras.io/api/models/model_training_apis/), scroll the page down to see info related to this fit method.
+- next we have fit method, where you actually pass the data to the network, similarly done in ml. to know more visit ["Keras"](https://keras.io/api/models/model_training_apis/), scroll the page down to see info related to this fit method.
 
 # evaluation 
 - even without evaluate method, you can see the accuracy and loss directly when you run that training cell, but we do have some other things which we can pass as parameters. you can visit ["Keras"](https://keras.io/api/models/model_training_apis/) and scroll down to ses info about this method. 
