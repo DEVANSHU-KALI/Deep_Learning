@@ -233,3 +233,26 @@ model.fit(X_train, y_train, batch_size=20, epochs=50)
 | **Mini-Batch GD (`batch_size=20`)** | `(20, 3)` | 5 | 5 |
 
 *(Notice why Keras displays `shape=(None, 3)` when we run `model.summary()`: that `None` placeholder is specifically reserved for the variable batch size—whether it receives `100`, `1`, or `20` rows at runtime).*
+
+---
+
+### Difference
+
+| Feature | Batch Gradient Descent (BGD) | Stochastic Gradient Descent (SGD) | Mini-Batch Gradient Descent |
+|---|---|---|---|
+| **How It Works** | Feeds the **entire training dataset** ($N$ samples) through the network at once, averages the error across all samples, and updates weights **once per epoch**. | Feeds **1 single randomly shuffled sample** at a time and updates weights immediately after every sample ($N$ updates per epoch). | Splits the dataset into small chunks (`batch_size`, e.g., 32, 64, 256) and updates weights after averaging the gradient of each chunk ($N / \text{batch\_size}$ updates per epoch). |
+| **Input Tensor Shape** | `(N, features)`<br>Example: `(60000, 784)` | `(1, features)`<br>Example: `(1, 784)` | `(batch_size, features)`<br>Example: `(32, 784)` |
+| **Loss Convergence Path** | Smooth, deterministic trajectory directly down the error surface. | Highly noisy, erratic zig-zag path that fluctuates constantly around the minimum. | Moderately smooth trajectory with controlled noise; stabilizes closely around the global minimum. |
+| **Pros** | 1. Guaranteed smooth convergence for convex surfaces. <br>2. Exact true gradient calculation with zero variance. | 1. Requires almost zero RAM/VRAM.<br>2. High gradient noise helps the model jump out of shallow local minima.<br>3. Starts improving weights immediately without waiting for a full dataset pass. | 1. **Best hardware utilization:** Maximizes parallel matrix multiplication on GPU cores.<br>2. Balances fast iteration speed with stable gradient estimates.<br>3. Fits massive datasets into limited GPU VRAM. |
+| **Cons** | 1. **Memory bottleneck:** Cannot fit large datasets (images, text, video) into RAM/VRAM.<br>2. Extremely slow per weight update.<br>3. Can get permanently stuck in sharp local minima or saddle points. | 1. **Terrible GPU efficiency:** Loses the benefits of vectorized matrix multiplication (essentially runs a slow Python `for` loop).<br>2. Never truly settles at the exact minimum due to constant single-sample noise. | 1. Introduces an extra hyperparameter (`batch_size`) that must be tuned alongside the learning rate. |
+| **When to Use** | Small tabular datasets ($N < 10,000$) that easily fit into memory, or when verifying mathematical correctness in scratch implementations. | Online learning (streaming live data one event at a time) or extreme memory-constrained environments. | **99% of all Deep Learning** (CNNs, Transformers, LLMs, MLPs). It is the universal industry default. |
+
+### Crucial Deep Learning Details to Keep in Mind
+
+* **VRAM & Hardware Parallelism:** GPUs (like an RTX 3050 with 4GB VRAM) are built to multiply large matrices simultaneously rather than loop sequentially. Mini-batching lets you saturate GPU CUDA/Tensor cores while keeping peak memory usage within your hardware's VRAM limit.
+* **Batch Size & Learning Rate Coupling:** Larger batch sizes produce cleaner, lower-variance gradients, allowing you to use a slightly **higher learning rate**. Smaller batch sizes create noisier gradients, which usually require a **smaller learning rate** to prevent unstable weight updates.
+* **Gradient Accumulation (The LLM Trick):** When training massive models (like LLMs) where even a batch size of 8 overflows GPU memory, engineers run forward/backward passes on micro-batches of 1 or 2, **accumulate (sum) the gradients** across 8 steps without updating weights, and then trigger `optimizer.step()` once—mathematically simulating a larger Mini-Batch without needing extra VRAM.
+* **Always Shuffle Before Slicing:** In both SGD and Mini-Batch GD, you must randomly shuffle your dataset at the start of every epoch. If your data is sorted by class (e.g., all `0`s first, then all `1`s), sequential mini-batches will bias the weights violently toward one class at a time.
+
+---
+
